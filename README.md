@@ -1,8 +1,8 @@
 # Just Observable
 
 Do you need an observable that can be subscribed and emitted?
-Are you looking for a single emitter to observe?
-Would you like to wait on the next emitter event?
+Are you looking for a single emitter to observe like rxjs subject?
+Would you like a promise to wait on the next event?
 
 ## Installation
 
@@ -16,36 +16,36 @@ const observer = justObservable();
 
 const unsubscribe = observer.subscribe(callback);
 
-observer.emit('some data');
-observer.emit('more data');
+observer.next('some data');
+observer.next('more data');
 
 unsubscribe();
 ```
 
-### next method
+### promise method
 
 Create a Promise that resolves at the next emitted value.
-Sequential `next` methods may miss data if the `emit` method is called repeatedly while blocking.
+Sequential `promise` methods may miss data if the `next` method is called repeatedly while blocking.
 
 ```js
 const justObservable = require('just-observable');
 const observer = justObservable();
 
 setTimeout(() => {
-	observer.emit('data1');
-	observer.emit('data2');	// will be missed by `next`
+	observer.next('data1');
+	observer.next('data2');	// will be missed by `promise`
 }, 5);
 setTimeout(() => {
-	observer.emit('data3');
+	observer.next('data3');
 }, 10);
 
-const value1 = await observer.next();
+const value1 = await observer.promise();
 // value1: "data1"
 
-const value2 = await observer.next();
+const value2 = await observer.promise();
 // value2: "data3"
 
-await observer.next(100);	// Optional timeout in 100ms
+await observer.promise(100);	// Optional timeout in 100ms
 // Error: timeout
 ```
 
@@ -73,9 +73,9 @@ const unsubscribe = observer.subscribe((report) => queue.push(report));
 	}
 })();
 
-observer.emit('some data');
+observer.next('some data');
 ```
 
 ## License
 
-Copyright (c) 2020, Michael Szmadzinski. (MIT License)
+Copyright (c) 2021, Michael Szmadzinski. (MIT License)

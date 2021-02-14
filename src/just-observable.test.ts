@@ -5,20 +5,20 @@ describe('just-observable', () => {
 		const observer = justObservable();
 		const list = [];
 
-		observer.emit('too early');
+		observer.next('too early');
 
 		const unsubscribe = observer.subscribe(value => {
 			list.push(value);
 		});
 		expect(observer.hasSubscribers).toBe(true);
 
-		observer.emit('some data');
-		observer.emit('more data');
+		observer.next('some data');
+		observer.next('more data');
 
 		unsubscribe();
 		expect(observer.hasSubscribers).toBe(false);
 
-		observer.emit('too late');
+		observer.next('too late');
 
 		expect(list).toEqual([
 			'some data',
@@ -26,17 +26,17 @@ describe('just-observable', () => {
 		]);
 	});
 
-	describe('next', () => {
+	describe('promise', () => {
 		it('should wait for next value', async () => {
 			const observer = justObservable();
 
-			setTimeout(() => { observer.emit('data') }, 1);
-			await observer.next();
+			setTimeout(() => { observer.next('data') }, 1);
+			await observer.promise();
 
 			const expectedError = new Error('This should have happened');
 			try {
-				setTimeout(() => { observer.emit('data') }, 1);
-				await observer.next(5);
+				setTimeout(() => { observer.next('data') }, 1);
+				await observer.promise(5);
 				throw expectedError;
 			} catch (err) {
 				expect(err).toEqual(expectedError);
@@ -50,8 +50,8 @@ describe('just-observable', () => {
 
 			const timeoutError = new Error('This should have timed out');
 			try {
-				setTimeout(() => { observer.emit('data') }, 5);
-				await observer.next(1);
+				setTimeout(() => { observer.next('data') }, 5);
+				await observer.promise(1);
 				throw timeoutError;
 			} catch (err) {
 				expect(err).not.toEqual(timeoutError);
