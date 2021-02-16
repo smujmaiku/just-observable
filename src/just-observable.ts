@@ -17,7 +17,7 @@ interface JustObservable<T> {
 	readonly hasSubscribers: boolean;
 }
 
-module.exports = function justObservable<T>(): JustObservable<T> {
+export = function justObservable<T>(): JustObservable<T> {
 	let count = 0;
 	const subscribers: Record<string, JustObservableSubscribeCb<T>> = {};
 
