@@ -66,3 +66,15 @@ function justObservable<T>(): JustObservable<T> {
 justObservable.justObservable = justObservable;
 justObservable.default = justObservable;
 export = justObservable;
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace justObservable {
+	export {
+		JustObservableUnubscribe,
+		JustObservableSubscribeCb,
+		JustObservableSubscribe,
+		JustObservableNext,
+		JustObservablePromise,
+		JustObservable,
+	}
+}
