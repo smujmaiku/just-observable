@@ -26,17 +26,17 @@ describe('just-observable', () => {
 		]);
 	});
 
-	describe('promise', () => {
+	describe('toPromise', () => {
 		it('should wait for next value', async () => {
 			const observer = justObservable();
 
 			setTimeout(() => { observer.next('data') }, 1);
-			await observer.promise();
+			await observer.toPromise();
 
 			const expectedError = new Error('This should have happened');
 			try {
 				setTimeout(() => { observer.next('data') }, 1);
-				await observer.promise(5);
+				await observer.toPromise(5);
 				throw expectedError;
 			} catch (err) {
 				expect(err).toEqual(expectedError);
@@ -51,7 +51,7 @@ describe('just-observable', () => {
 			const timeoutError = new Error('This should have timed out');
 			try {
 				setTimeout(() => { observer.next('data') }, 5);
-				await observer.promise(1);
+				await observer.toPromise(1);
 				throw timeoutError;
 			} catch (err) {
 				expect(err).not.toEqual(timeoutError);

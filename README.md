@@ -22,10 +22,10 @@ observer.next('more data');
 unsubscribe();
 ```
 
-### promise method
+### toPromise method
 
 Create a Promise that resolves at the next emitted value.
-Sequential `promise` methods may miss data if the `next` method is called repeatedly while blocking.
+Sequential `toPromise` methods may miss data if the `next` method is called repeatedly while blocking.
 
 ```js
 const justObservable = require('just-observable');
@@ -33,19 +33,19 @@ const observer = justObservable();
 
 setTimeout(() => {
 	observer.next('data1');
-	observer.next('data2');	// will be missed by `promise`
+	observer.next('data2');	// will be missed by `toPromise`
 }, 5);
 setTimeout(() => {
 	observer.next('data3');
 }, 10);
 
-const value1 = await observer.promise();
+const value1 = await observer.toPromise();
 // value1: "data1"
 
-const value2 = await observer.promise();
+const value2 = await observer.toPromise();
 // value2: "data3"
 
-await observer.promise(100);	// Optional timeout in 100ms
+await observer.toPromise(100);	// Optional timeout in 100ms
 // Error: timeout
 ```
 

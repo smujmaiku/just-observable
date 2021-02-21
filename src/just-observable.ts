@@ -8,12 +8,12 @@ type JustObservableUnubscribe = () => void;
 type JustObservableSubscribeCb<T> = (value: T) => void;
 type JustObservableSubscribe<T> = (cb: JustObservableSubscribeCb<T>) => JustObservableUnubscribe;
 type JustObservableNext<T> = (value: T) => void;
-type JustObservablePromise<T> = (timeout?: number) => Promise<T>;
+type JustObservableToPromise<T> = (timeout?: number) => Promise<T>;
 
 interface JustObservable<T> {
 	subscribe: JustObservableSubscribe<T>;
 	next: JustObservableNext<T>
-	promise: JustObservablePromise<T>;
+	toPromise: JustObservableToPromise<T>;
 	readonly hasSubscribers: boolean;
 }
 
@@ -36,7 +36,7 @@ function justObservable<T>(): JustObservable<T> {
 		}
 	};
 
-	const promise: JustObservablePromise<T> = async (timeout = -1) => {
+	const toPromise: JustObservableToPromise<T> = async (timeout = -1) => {
 		/* istanbul ignore next: imposible to enter */
 		let unsubscribe = () => { return; };
 
@@ -58,7 +58,7 @@ function justObservable<T>(): JustObservable<T> {
 	return {
 		subscribe,
 		next,
-		promise,
+		toPromise,
 		get hasSubscribers() { return Object.keys(subscribers).length > 0; },
 	};
 }
@@ -74,7 +74,7 @@ declare namespace justObservable {
 		JustObservableSubscribeCb,
 		JustObservableSubscribe,
 		JustObservableNext,
-		JustObservablePromise,
+		JustObservableToPromise,
 		JustObservable,
 	}
 }
