@@ -1,0 +1,4 @@
+{
+	"main": "./just-observable.js",
+	"types": "./just-observable.d.ts"
+}

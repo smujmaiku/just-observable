@@ -2,8 +2,8 @@ import justObservable from './just-observable';
 
 describe('just-observable', () => {
 	it('should observe', () => {
-		const observer = justObservable();
-		const list = [];
+		const observer = justObservable<string>();
+		const list: string[] = [];
 
 		observer.next('too early');
 
@@ -28,7 +28,7 @@ describe('just-observable', () => {
 
 	describe('toPromise', () => {
 		it('should wait for next value', async () => {
-			const observer = justObservable();
+			const observer = justObservable<string>();
 
 			setTimeout(() => { observer.next('data') }, 1);
 			await observer.toPromise();
@@ -46,7 +46,7 @@ describe('just-observable', () => {
 		});
 
 		it('should timeout', async () => {
-			const observer = justObservable();
+			const observer = justObservable<string>();
 
 			const timeoutError = new Error('This should have timed out');
 			try {

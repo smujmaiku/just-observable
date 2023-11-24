@@ -17,7 +17,7 @@ interface JustObservable<T> {
 	readonly hasSubscribers: boolean;
 }
 
-function justObservable<T>(): JustObservable<T> {
+function justObservable<T = unknown>(): JustObservable<T> {
 	let count = 0;
 	const subscribers: Record<string, JustObservableSubscribeCb<T>> = {};
 
@@ -37,8 +37,7 @@ function justObservable<T>(): JustObservable<T> {
 	};
 
 	const toPromise: JustObservableToPromise<T> = async (timeout = -1) => {
-		/* istanbul ignore next: imposible to enter */
-		let unsubscribe = () => { return; };
+		let unsubscribe: () => void = null!;
 
 		try {
 			const result: T = await new Promise((resolve, reject) => {
@@ -67,7 +66,6 @@ justObservable.justObservable = justObservable;
 justObservable.default = justObservable;
 export = justObservable;
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace justObservable {
 	export {
 		JustObservableUnubscribe,
