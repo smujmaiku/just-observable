@@ -7,7 +7,7 @@ describe('just-observable', () => {
 
 		observer.next('too early');
 
-		const unsubscribe = observer.subscribe(value => {
+		const unsubscribe = observer.subscribe((value) => {
 			list.push(value);
 		});
 		expect(observer.hasSubscribers).toBe(true);
@@ -20,22 +20,23 @@ describe('just-observable', () => {
 
 		observer.next('too late');
 
-		expect(list).toEqual([
-			'some data',
-			'more data',
-		]);
+		expect(list).toEqual(['some data', 'more data']);
 	});
 
 	describe('toPromise', () => {
 		it('should wait for next value', async () => {
 			const observer = justObservable<string>();
 
-			setTimeout(() => { observer.next('data') }, 1);
+			setTimeout(() => {
+				observer.next('data');
+			}, 1);
 			await observer.toPromise();
 
 			const expectedError = new Error('This should have happened');
 			try {
-				setTimeout(() => { observer.next('data') }, 1);
+				setTimeout(() => {
+					observer.next('data');
+				}, 1);
 				await observer.toPromise(5);
 				throw expectedError;
 			} catch (err) {
@@ -50,7 +51,9 @@ describe('just-observable', () => {
 
 			const timeoutError = new Error('This should have timed out');
 			try {
-				setTimeout(() => { observer.next('data') }, 5);
+				setTimeout(() => {
+					observer.next('data');
+				}, 5);
 				await observer.toPromise(1);
 				throw timeoutError;
 			} catch (err) {
@@ -59,6 +62,5 @@ describe('just-observable', () => {
 
 			expect(observer.hasSubscribers).toBe(false);
 		});
-	})
-
+	});
 });
