@@ -1,6 +1,6 @@
 {
   "name": "just-observable",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Create a simple observable",
   "main": "build/just-observable.js",
   "types": "build/just-observable.d.ts",
